@@ -10,12 +10,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.tiagoliberato.assistente_virtual_jargos.application.FindTransactionsByDateBetwen;
 import org.tiagoliberato.assistente_virtual_jargos.application.ListTransactionByCategoryUseCase;
 import org.tiagoliberato.assistente_virtual_jargos.application.PersistTransactionUseCase;
 import org.tiagoliberato.assistente_virtual_jargos.domain.Category;
 import org.tiagoliberato.assistente_virtual_jargos.domain.Transaction;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.request.TransactionRequest;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -24,6 +27,7 @@ public class TransactionController {
 
     private final PersistTransactionUseCase persistTransactionUseCase;
     private final ListTransactionByCategoryUseCase listTransactionByCategoryUseCase;
+    FindTransactionsByDateBetwen findTransactionsByDateBetwen;
     private final TranscriptionModel transcriptionModel;
     private final ChatClient chatClient;
     private final TextToSpeechModel textToSpeechModel;
@@ -32,15 +36,17 @@ public class TransactionController {
             ChatClient.Builder chatClienteBuilder,
             PersistTransactionUseCase persistTransactionUseCase,
             ListTransactionByCategoryUseCase listTransactionByCategoryUseCase,
+            FindTransactionsByDateBetwen findTransactionsByDateBetwen,
             TranscriptionModel transcriptionModel,
             TextToSpeechModel textTospech) {
 
         this.persistTransactionUseCase = persistTransactionUseCase;
         this.listTransactionByCategoryUseCase = listTransactionByCategoryUseCase;
+        this.findTransactionsByDateBetwen = findTransactionsByDateBetwen;
         this.transcriptionModel = transcriptionModel;
 
         this.chatClient = chatClienteBuilder
-                .defaultTools(persistTransactionUseCase, listTransactionByCategoryUseCase)
+                .defaultTools(persistTransactionUseCase, listTransactionByCategoryUseCase, findTransactionsByDateBetwen)
                 .build();
 
         this.textToSpeechModel = textTospech;
@@ -57,6 +63,11 @@ public class TransactionController {
     public List<Transaction> findByAllCategory(@PathVariable Category category){
         return listTransactionByCategoryUseCase.execute(category.toString());
 
+    }
+
+    @GetMapping
+    public  List<Transaction> findByDateBetwen(@RequestParam Month month, @RequestParam Year year){
+        return findTransactionsByDateBetwen.execute(month, year);
     }
 
     @PostMapping(value = "/ai", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

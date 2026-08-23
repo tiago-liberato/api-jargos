@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tiagoliberato.assistente_virtual_jargos.domain.Category;
 import org.tiagoliberato.assistente_virtual_jargos.domain.Transaction;
-import org.tiagoliberato.assistente_virtual_jargos.domain.TransactionRepository;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.repository.TransactionRepository;
 
 import java.util.List;
 

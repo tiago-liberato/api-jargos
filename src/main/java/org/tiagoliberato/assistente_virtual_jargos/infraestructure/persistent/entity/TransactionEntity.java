@@ -9,6 +9,7 @@ import org.tiagoliberato.assistente_virtual_jargos.domain.Category;
 import org.tiagoliberato.assistente_virtual_jargos.domain.Transaction;
 import org.tiagoliberato.assistente_virtual_jargos.domain.TransactionId;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -22,12 +23,13 @@ public class TransactionEntity {
     private String description;
     private long amount;
     private Category category;
+    private LocalDate date;
 
     public static  TransactionEntity from(Transaction transaction){
-        return new TransactionEntity(transaction.getId().uuid(),  transaction.getDescription(), transaction.getAmount(), transaction.getCategory());
+        return new TransactionEntity(transaction.getId().uuid(),  transaction.getDescription(), transaction.getAmount(), transaction.getCategory(), transaction.getDate());
     }
 
     public  Transaction toDomain(){
-        return new Transaction(new TransactionId(id), description, amount, category);
+        return new Transaction(new TransactionId(id), description, amount, category, date);
     }
 }
