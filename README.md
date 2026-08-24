@@ -28,6 +28,17 @@ Por trás dos panos, a aplicação é construída em camadas bem separadas (dom�
 3. Suba o banco de dados: `docker compose up -d`
 4. Rode a aplicação: `./mvnw spring-boot:run`
 5. Acesse a documentação interativa em `http://localhost:8080/swagger-ui.html`
+6. Para o modo IA gere áudios em sites como `https://elevenlabs.io/app/speech-synthesis/text-to-speech`, descrevendo uma compra ou especificando um tipo de consulta.
+
+
+## Como testar o fluxo principal
+
+A forma mais fácil de testar é pelo Swagger, em `http://localhost:8080/swagger-ui.html`:
+
+1. **Usar o recurso de Áudio com IA**: envie um arquivo de áudio no endpoint de transcrição, dizendo algo como "gastei 20 reais com transporte". A aplicação transcreve, entende a intenção e salva ou consulta a transação automaticamente.
+2. **Consultar transações por categoria ou por periodo**: use o endpoint de listagem, informando a categoria desejada ou mês e ano.
+3. **Criar transação por formulário**:Envie um formulário com os dados da transação realizada para ser salva no banco.
+Também é possível testar diretamente pelo Postman, enviando arquivos de áudio em `multipart/form-data`.
 
 ## Melhoria implementada
 
@@ -52,14 +63,6 @@ Essa funcionalidade reaproveita a mesma estrutura já usada para registrar trans
 - **Lombok** — para reduzir código repetitivo nas classes
 - **Springdoc OpenAPI (Swagger)** — documentação interativa dos endpoints
 
-## Como testar o fluxo principal
-
-A forma mais fácil de testar é pelo Swagger, em `http://localhost:8080/swagger-ui.html`:
-
-1. **Usar o recurso de Áudio com IA**: envie um arquivo de áudio no endpoint de transcrição, dizendo algo como "gastei 20 reais com transporte". A aplicação transcreve, entende a intenção e salva ou consulta a transação automaticamente.
-2. **Consultar transações por categoria ou por periodo**: use o endpoint de listagem, informando a categoria desejada ou mês.
-3. **Criar transação por formulário**:Envie um formulário com os dados da transação realizada para ser salva no banco.
-Também é possível testar diretamente pelo Postman, enviando arquivos de áudio em `multipart/form-data`.
 
 ## O que aprendi durante o desafio
 
