@@ -1,10 +1,11 @@
 package org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.tiagoliberato.assistente_virtual_jargos.domain.Category;
 import org.tiagoliberato.assistente_virtual_jargos.domain.Transaction;
 import org.tiagoliberato.assistente_virtual_jargos.domain.TransactionId;
@@ -14,14 +15,18 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table(name = "transaction")
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionEntity {
     @Id
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
     private String description;
     private long amount;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
     private LocalDate date;
 
