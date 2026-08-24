@@ -44,6 +44,7 @@ Essa funcionalidade reaproveita a mesma estrutura já usada para registrar trans
 ## Tecnologias usadas
 
 - **Java 21** e **Spring Boot** — base da aplicação
+- **Flyway** - Usado para migração do banco de dados
 - **Spring Data JPA** + **MySQL** — persistência das transações
 - **Docker** e **Docker Compose** — para subir o banco de dados de forma padronizada, sem precisar instalar nada manualmente
 - **Spring AI** — camada de integração com o modelo de IA
