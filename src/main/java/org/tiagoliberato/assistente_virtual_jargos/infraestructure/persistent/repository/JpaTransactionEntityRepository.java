@@ -1,12 +1,13 @@
 package org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.repository;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
-import org.tiagoliberato.assistente_virtual_jargos.domain.Category;
-import org.tiagoliberato.assistente_virtual_jargos.domain.Transaction;
+import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionQuery;
+import org.tiagoliberato.assistente_virtual_jargos.domain.model.Transaction;
+import org.tiagoliberato.assistente_virtual_jargos.domain.TransactionRepository;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.entity.TransactionEntity;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.specification.TransactionSpecification;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -22,13 +23,11 @@ public class JpaTransactionEntityRepository implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> findAllCategory(Category category) {
-        return transactionEntityRepository.findAllByCategory(category).stream().map(TransactionEntity::toDomain).toList();
-    }
+    public List<Transaction> findAll(TransactionQuery query){
+        Specification<TransactionEntity> esp = TransactionSpecification.from(query);
+        List<TransactionEntity> list = transactionEntityRepository.findAll(esp);
 
-    @Override
-    public List<Transaction> findByDateBetwen(LocalDate startDate, LocalDate endDate){
-        return transactionEntityRepository.findByDateBetween(startDate, endDate).stream().map(TransactionEntity::toDomain).toList();
+        return list.stream().map(TransactionEntity::toDomain).toList();
     }
 
 }

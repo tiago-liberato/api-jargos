@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import org.tiagoliberato.assistente_virtual_jargos.domain.Category;
-import org.tiagoliberato.assistente_virtual_jargos.domain.Transaction;
-import org.tiagoliberato.assistente_virtual_jargos.domain.TransactionId;
+import org.tiagoliberato.assistente_virtual_jargos.domain.model.Category;
+import org.tiagoliberato.assistente_virtual_jargos.domain.model.Transaction;
+import org.tiagoliberato.assistente_virtual_jargos.domain.model.TransactionId;
 
 import java.time.LocalDate;
 import java.util.UUID;

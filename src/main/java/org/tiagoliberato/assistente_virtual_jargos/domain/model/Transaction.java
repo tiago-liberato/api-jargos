@@ -1,6 +1,5 @@
-package org.tiagoliberato.assistente_virtual_jargos.domain;
+package org.tiagoliberato.assistente_virtual_jargos.domain.model;
 
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

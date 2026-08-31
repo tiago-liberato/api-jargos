@@ -3,22 +3,18 @@ package org.tiagoliberato.assistente_virtual_jargos.infraestructure.http;
 import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.ai.audio.tts.TextToSpeechModel;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.tomcat.autoconfigure.TomcatServerProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.tiagoliberato.assistente_virtual_jargos.application.FindTransactionsByDateBetwen;
-import org.tiagoliberato.assistente_virtual_jargos.application.ListTransactionByCategoryUseCase;
-import org.tiagoliberato.assistente_virtual_jargos.application.PersistTransactionUseCase;
-import org.tiagoliberato.assistente_virtual_jargos.domain.Category;
-import org.tiagoliberato.assistente_virtual_jargos.domain.Transaction;
+import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionQuery;
+import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionResponse;
+import org.tiagoliberato.assistente_virtual_jargos.application.transactions.usecase.ConsultTransactions;
+import org.tiagoliberato.assistente_virtual_jargos.application.transactions.usecase.PersistTransactionUseCase;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.request.TransactionRequest;
 
-import java.time.Month;
-import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -26,27 +22,33 @@ import java.util.List;
 public class TransactionController {
 
     private final PersistTransactionUseCase persistTransactionUseCase;
-    private final ListTransactionByCategoryUseCase listTransactionByCategoryUseCase;
-    FindTransactionsByDateBetwen findTransactionsByDateBetwen;
+    private final ConsultTransactions consultTransactions;
     private final TranscriptionModel transcriptionModel;
-    private final ChatClient chatClient;
+    private final ChatClient chatClientQuery;
+    private final ChatClient chatClientAssistant;
     private final TextToSpeechModel textToSpeechModel;
 
     public TransactionController(
-            ChatClient.Builder chatClienteBuilder,
+            ChatClient.Builder chatClienteQueryBuilder,
+            ChatClient.Builder chatClientAssistantBuilder,
             PersistTransactionUseCase persistTransactionUseCase,
-            ListTransactionByCategoryUseCase listTransactionByCategoryUseCase,
-            FindTransactionsByDateBetwen findTransactionsByDateBetwen,
+            ConsultTransactions consultTransactions,
             TranscriptionModel transcriptionModel,
-            TextToSpeechModel textTospech) {
+            TextToSpeechModel textTospech,
+            @Value("classpath:prompt/querySystemPrompt.st") Resource querySystemPrompt,
+            @Value("classpath:prompt/assistantSystemPrompt.st") Resource assistantSystemPrompt) {
 
         this.persistTransactionUseCase = persistTransactionUseCase;
-        this.listTransactionByCategoryUseCase = listTransactionByCategoryUseCase;
-        this.findTransactionsByDateBetwen = findTransactionsByDateBetwen;
+        this.consultTransactions = consultTransactions;
         this.transcriptionModel = transcriptionModel;
 
-        this.chatClient = chatClienteBuilder
-                .defaultTools(persistTransactionUseCase, listTransactionByCategoryUseCase, findTransactionsByDateBetwen)
+        this.chatClientQuery = chatClienteQueryBuilder
+                .defaultSystem(querySystemPrompt)
+                .build();
+
+        this.chatClientAssistant = chatClientAssistantBuilder
+                .defaultSystem(assistantSystemPrompt)
+                .defaultTools(consultTransactions, persistTransactionUseCase)
                 .build();
 
         this.textToSpeechModel = textTospech;
@@ -54,28 +56,18 @@ public class TransactionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Transaction createTransaction(@RequestBody TransactionRequest request){
+    public TransactionResponse createTransaction(@RequestBody TransactionRequest request){
         var transaction = persistTransactionUseCase.execute(request.description(), request.amount(), request.category());
         return transaction;
     }
 
-    @GetMapping("/{category}")
-    public List<Transaction> findByAllCategory(@PathVariable Category category){
-        return listTransactionByCategoryUseCase.execute(category.toString());
 
-    }
-
-    @GetMapping
-    public  List<Transaction> findByDateBetwen(@RequestParam Month month, @RequestParam Year year){
-        return findTransactionsByDateBetwen.execute(month, year);
-    }
-
-    @PostMapping(value = "/ai", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/assistant", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<Resource> transcribe(@RequestParam("file") MultipartFile file){
         var audioResource = file.getResource();
         var transcription = transcriptionModel.transcribe(audioResource);
 
-        var response = chatClient.prompt().user(transcription).call().content();
+        var response = chatClientAssistant.prompt().user(transcription).call().content();
 
         byte[] speechBytes = textToSpeechModel.call(response);
         Resource speechResource = new ByteArrayResource(speechBytes);
@@ -88,5 +80,23 @@ public class TransactionController {
                                 .build()
                                 .toString())
                 .body(speechResource);
+    }
+
+    @PostMapping(value = "/query", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<List<TransactionResponse>> consult(@RequestParam("file") MultipartFile file){
+        var audioResource = file.getResource();
+        var transcription = transcriptionModel.transcribe(audioResource);
+
+        TransactionQuery query = chatClientQuery.prompt()
+                .user(transcription)
+                .call()
+                .entity(TransactionQuery.class);
+
+        List<TransactionResponse> transactions = consultTransactions.executeQuery(query);
+
+        return ResponseEntity.ok(transactions);
+
+
+
     }
 }
