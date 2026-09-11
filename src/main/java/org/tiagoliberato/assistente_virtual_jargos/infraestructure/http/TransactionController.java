@@ -66,6 +66,7 @@ public class TransactionController {
     ResponseEntity<Resource> transcribe(@RequestParam("file") MultipartFile file){
         var audioResource = file.getResource();
         var transcription = transcriptionModel.transcribe(audioResource);
+        System.out.println(transcription);
 
         var response = chatClientAssistant.prompt().user(transcription).call().content();
 

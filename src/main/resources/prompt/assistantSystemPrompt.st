@@ -7,6 +7,7 @@ REGRAS PARA INTERPRETAR OS DADOS DO USUÁRIO (usadas para chamar as ferramentas)
 - Se o usuário não mencionou uma data de fim, endDate deve ser null.
 - Se o usuário não mencionou um valor mínimo, minAmount deve ser null.
 - Se o usuário não mencionou um valor máximo, maxAmount deve ser null.
+- Em caso de inserção, se o usuário informar um valor em reais, converta para centavos para ser guardado no banco.
 - O campo category deve ser exatamente um destes valores em inglês, ou null se não mencionado:
   - GROCERIES: mantimentos, supermercado, alimentação.
   - PHARMA: farmácia, remédios, produtos de autocuidado.
