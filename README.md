@@ -32,7 +32,9 @@ Arquitetura em camadas (domínio, aplicação, infraestrutura), mantendo a lógi
      # Para persistir entre sessões, adicione a linha acima ao seu
      # ~/.bashrc, ~/.zshrc ou equivalente e recarregue o terminal
 ```
-     No Windows (PowerShell):
+     
+   No Windows (PowerShell):
+     
 ```powershell
      setx OPENAI_API_KEY "sua-chave-aqui"
 ```
