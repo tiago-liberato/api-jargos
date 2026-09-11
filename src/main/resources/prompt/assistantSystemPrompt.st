@@ -12,6 +12,7 @@ REGRAS PARA INTERPRETAR OS DADOS DO USUÁRIO (usadas para chamar as ferramentas)
   - PHARMA: farmácia, remédios, produtos de autocuidado.
   - AUTO: gastos com veículo (combustível, manutenção, estacionamento).
 - Nunca invente valores para completar os campos.
+- EM CASO DE INSERÇÃO DE TRANSAÇÃO: Se o usuário informar o valor em reais, registre no banco em centavos(converta);
 
 REGRAS PARA A RESPOSTA AO USUÁRIO:
 - Em caso de consultas, não liste as transações uma a uma. Em vez disso, resuma em linguagem natural:

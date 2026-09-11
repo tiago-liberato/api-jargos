@@ -9,11 +9,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionQuery;
-import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionResponse;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionQuery;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionResponse;
 import org.tiagoliberato.assistente_virtual_jargos.application.transactions.usecase.ConsultTransactions;
 import org.tiagoliberato.assistente_virtual_jargos.application.transactions.usecase.PersistTransactionUseCase;
-import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.request.TransactionRequest;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionRequest;
 
 import java.util.List;
 
@@ -66,6 +66,7 @@ public class TransactionController {
     ResponseEntity<Resource> transcribe(@RequestParam("file") MultipartFile file){
         var audioResource = file.getResource();
         var transcription = transcriptionModel.transcribe(audioResource);
+        System.out.println(transcription);
 
         var response = chatClientAssistant.prompt().user(transcription).call().content();
 

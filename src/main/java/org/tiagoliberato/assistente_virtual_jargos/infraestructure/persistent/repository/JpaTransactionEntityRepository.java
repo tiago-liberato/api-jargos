@@ -2,7 +2,7 @@ package org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.r
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
-import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionQuery;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionQuery;
 import org.tiagoliberato.assistente_virtual_jargos.domain.model.Transaction;
 import org.tiagoliberato.assistente_virtual_jargos.domain.TransactionRepository;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.entity.TransactionEntity;

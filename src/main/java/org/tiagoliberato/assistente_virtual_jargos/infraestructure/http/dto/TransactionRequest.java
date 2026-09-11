@@ -1,4 +1,4 @@
-package org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.request;
+package org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto;
 
 import org.tiagoliberato.assistente_virtual_jargos.domain.model.Category;
 

@@ -2,7 +2,7 @@ package org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.s
 
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
-import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionQuery;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionQuery;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.persistent.entity.TransactionEntity;
 
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import java.util.List;
 public class TransactionSpecification {
 
     public static Specification<TransactionEntity> from(TransactionQuery query){
+
         return(root, criteriaQuery, criteriaBuilder) ->{
             List<Predicate> predicates = new ArrayList<>();
 

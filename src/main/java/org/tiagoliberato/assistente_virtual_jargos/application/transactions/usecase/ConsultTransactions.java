@@ -4,8 +4,8 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionQuery;
-import org.tiagoliberato.assistente_virtual_jargos.application.transactions.dto.TransactionResponse;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionQuery;
+import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionResponse;
 import org.tiagoliberato.assistente_virtual_jargos.domain.model.Transaction;
 import org.tiagoliberato.assistente_virtual_jargos.domain.TransactionRepository;
 
