@@ -93,6 +93,8 @@ public class TransactionController {
                 .call()
                 .entity(TransactionQuery.class);
 
+        System.out.println(query);
+
         List<TransactionResponse> transactions = consultTransactions.executeQuery(query);
 
         return ResponseEntity.ok(transactions);
