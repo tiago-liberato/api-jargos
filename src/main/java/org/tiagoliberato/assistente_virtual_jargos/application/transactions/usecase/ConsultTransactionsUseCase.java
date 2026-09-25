@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class ConsultTransactions {
+public class ConsultTransactionsUseCase {
 
     @Autowired
     TransactionRepository transactionRepository;

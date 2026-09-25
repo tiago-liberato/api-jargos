@@ -11,6 +11,7 @@ import java.util.UUID;
 public class User {
 
     private String name;
+    private String password;
     private LocalDate birthDate;
     private String cpf;
 

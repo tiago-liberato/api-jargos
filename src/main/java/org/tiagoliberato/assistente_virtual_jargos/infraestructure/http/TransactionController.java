@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionQuery;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionResponse;
-import org.tiagoliberato.assistente_virtual_jargos.application.transactions.usecase.ConsultTransactions;
+import org.tiagoliberato.assistente_virtual_jargos.application.transactions.usecase.ConsultTransactionsUseCase;
 import org.tiagoliberato.assistente_virtual_jargos.application.transactions.usecase.PersistTransactionUseCase;
 import org.tiagoliberato.assistente_virtual_jargos.infraestructure.http.dto.TransactionRequest;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class TransactionController {
 
     private final PersistTransactionUseCase persistTransactionUseCase;
-    private final ConsultTransactions consultTransactions;
+    private final ConsultTransactionsUseCase consultTransactions;
     private final TranscriptionModel transcriptionModel;
     private final ChatClient chatClientQuery;
     private final ChatClient chatClientAssistant;
@@ -32,7 +32,7 @@ public class TransactionController {
             ChatClient.Builder chatClienteQueryBuilder,
             ChatClient.Builder chatClientAssistantBuilder,
             PersistTransactionUseCase persistTransactionUseCase,
-            ConsultTransactions consultTransactions,
+            ConsultTransactionsUseCase consultTransactions,
             TranscriptionModel transcriptionModel,
             TextToSpeechModel textTospech,
             @Value("classpath:prompt/querySystemPrompt.st") Resource querySystemPrompt,
