@@ -17,7 +17,6 @@ public class JpaUserEntityRepository implements UserRepository {
     @Override
     public User save(User user) {
        UserEntity entity = UserEntity.from(user);
-
        return userEntityRepository.save(entity).toDomain();
     }
 
@@ -25,5 +24,10 @@ public class JpaUserEntityRepository implements UserRepository {
     public User findByName(String name) {
         return userEntityRepository.findByName(name).map(UserEntity::toDomain)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    }
+
+    @Override
+    public boolean existsByCpf(String cpf){
+        return userEntityRepository.existsByCpf(cpf);
     }
 }

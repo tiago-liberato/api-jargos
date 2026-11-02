@@ -36,4 +36,8 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(user);
     }
 
+    public User getUser(){
+        return user;
+    }
+
 }

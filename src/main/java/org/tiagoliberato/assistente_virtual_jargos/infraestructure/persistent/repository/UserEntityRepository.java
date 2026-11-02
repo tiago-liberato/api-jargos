@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface UserEntityRepository extends CrudRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByName(String name);
+    boolean existsByCpf(String cpf);
 
 }

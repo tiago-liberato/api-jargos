@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "users" )
 @AllArgsConstructor
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,17 +26,21 @@ public class UserEntity {
     @CPF(message = "CPF inválido")
     private String cpf;
 
-    public UserEntity(String name, LocalDate birthDate, String cpf){
+    @NotBlank
+    private String password;
+
+    public UserEntity(String name, LocalDate birthDate, String cpf, String password){
         this.name = name;
         this.birthDate = birthDate;
         this.cpf = cpf;
+        this.password = password;
     }
 
     public static UserEntity from(User user){
-        return new UserEntity(user.getName(), user.getBirthDate(), user.getCpf());
+        return new UserEntity(user.getName(), user.getBirthDate(), user.getCpf(), user.getPassword());
     }
 
     public  User toDomain(){
-        return new User(this.name, this.birthDate, this.cpf);
+        return new User(this.id, this.name, this.password, this.birthDate, this.cpf);
     }
 }
